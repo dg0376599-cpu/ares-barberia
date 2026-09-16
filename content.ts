@@ -104,21 +104,19 @@ export const barbers = [
 /**
  * Galería antes/después.
  *
- * Sin fotos hasta que exista la sesión real. El comparador está montado y
- * probado —arrastre, teclado, lector de pantalla— y degrada a un
- * placeholder tipográfico mientras no haya imágenes: basta poner aquí las
- * rutas y funciona.
+ * ⚠️ Las imágenes son MARCADORES, y así se declara en el README: no son
+ * trabajos de esta barbería —que no existe— sino sustitutas hasta que
+ * haya una sesión real. La advertencia se retira al cambiarlas.
  *
- * Las fotos de prueba que hubo aquí se retiraron por dos motivos. La
- * resolución era inservible: llegaron por WhatsApp, que recomprime, y el
- * par más pequeño medía 119px de ancho para un marco de ~400px. Y, lo
- * importante, no eran trabajos de esta barbería — en un par se veía el
- * cartel de otro local al fondo. Publicar trabajo ajeno como propio
- * engaña al cliente final, y esas imágenes no son nuestras para
- * redistribuirlas en una web pública.
+ * Hubo un tercer par y se descartó por calidad: medía 119px de ancho y el
+ * optimizador lo servía a 46px. A ese tamaño no es una foto, es un
+ * mosaico.
  *
- * Para la sesión: mínimo 1200px de ancho, entregadas por AirDrop, Drive o
- * correo. Nunca por WhatsApp.
+ * Para la sesión real: mínimo 1200px de ancho, entregadas por AirDrop,
+ * Drive o correo. Nunca por WhatsApp, que recomprime y las destroza.
+ *
+ * El comparador funciona con o sin imagen: una entrada en `null` degrada
+ * a un marcador tipográfico en vez de romperse.
  *
  * El tratamiento (blanco y negro con tinte bronce) se aplica por CSS y no
  * va quemado en los archivos: unifica fotos de procedencia y calidad
