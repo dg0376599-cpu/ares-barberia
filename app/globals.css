@@ -140,6 +140,53 @@
   }
 }
 
+/* ───────────── el emblema, en tres dimensiones ─────────────
+   La perspectiva vive en el contenedor y la rotación en el hijo: si se
+   ponen en el mismo elemento, la perspectiva se aplica desde el centro
+   de la pantalla y la inclinación se deforma. */
+
+.emblema-escena {
+  perspective: 900px;
+  perspective-origin: 50% 45%;
+}
+
+.emblema-moneda {
+  position: relative;
+  transform-style: preserve-3d;
+  /* backwards: antes de que arranque el retardo, la moneda ya está de
+     canto. Sin esto aparece de frente y luego pega un salto. */
+  animation: acunar 1.2s var(--ease-out-soft) 0.2s backwards;
+}
+
+/* Reflejo: una luz difusa cruzando el metal en diagonal. Se mueve al
+   inclinarse, que es lo que hace creer que hay relieve. */
+.emblema-brillo {
+  position: absolute;
+  inset: -25%;
+  pointer-events: none;
+  border-radius: 50%;
+  /* color-mix y no la sintaxis de color relativo: mismo resultado y
+     bastante más soporte. Si aun así fallara, el emblema se queda sin
+     reflejo pero íntegro. */
+  background: radial-gradient(
+    closest-side at 34% 26%,
+    color-mix(in srgb, var(--color-bronze-light) 30%, transparent),
+    color-mix(in srgb, var(--color-bronze-light) 8%, transparent) 45%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+}
+
+@keyframes acunar {
+  from {
+    transform: rotateY(-88deg);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+}
+
 /* ───────────── barrido de luz sobre metal ─────────────
    Aparece UNA sola vez en la página, en "Forjado en Caracas".
    El color sólido es el estado base: si el navegador no soporta

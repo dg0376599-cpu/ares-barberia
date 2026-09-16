@@ -65,13 +65,24 @@ export default function Location() {
 
         <div className="relative min-h-[18rem] bg-surface lg:min-h-[24rem]">
           {loaded ? (
-            <iframe
-              title={`Mapa de ${business.fullName}`}
-              src={`https://maps.google.com/maps?q=${query}&output=embed`}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="absolute inset-0 h-full w-full grayscale-[0.9] contrast-125"
-            />
+            <>
+              {/* Aviso de carga debajo del iframe: el embed de Google tarda
+                  bastante con datos móviles, y sin esto el visitante ve un
+                  rectángulo gris y cree que está roto. Desaparece detrás del
+                  mapa en cuanto pinta. */}
+              <p className="absolute inset-0 grid place-content-center text-[0.8125rem] text-ink-soft">
+                Cargando el mapa…
+              </p>
+              <iframe
+                title={`Mapa de ${business.fullName}`}
+                src={`https://maps.google.com/maps?q=${query}&output=embed`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                // brightness bajo: el embed entra casi blanco y en una
+                // página negra se ve como un agujero de luz.
+                className="absolute inset-0 h-full w-full grayscale-[0.9] brightness-[0.75] contrast-125"
+              />
+            </>
           ) : (
             <button
               type="button"

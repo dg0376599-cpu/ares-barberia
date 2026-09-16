@@ -33,7 +33,9 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-edge px-5 pb-16 pt-16 sm:px-8 lg:px-12">
+    // pb generoso: el botón flotante de reserva vive a 20px del borde
+    // inferior y con menos espacio aterrizaba encima de los enlaces legales.
+    <footer className="border-t border-edge px-5 pb-32 pt-16 sm:px-8 lg:px-12">
       <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr]">
         <div>
           <p className="font-display text-[2rem] uppercase leading-none tracking-[0.06em]">
