@@ -26,8 +26,8 @@ function Comparator({
   after,
 }: {
   service: string;
-  before: string;
-  after: string;
+  before: string | null;
+  after: string | null;
 }) {
   const [position, setPosition] = useState(50);
   const frameRef = useRef<HTMLDivElement>(null);
@@ -68,15 +68,26 @@ function Comparator({
         onPointerMove={onPointerMove}
         className="relative aspect-3/4 cursor-ew-resize touch-pan-y select-none overflow-hidden bg-surface outline-offset-2 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-bronze-light"
       >
-        {/* Después — capa de fondo */}
-        <div className="absolute inset-0">
-          <Image src={after} alt="" fill sizes={sizes} className={imgClass} />
+        {/* Después — capa de fondo.
+            Sin foto, las dos capas se distinguen por temperatura: si
+            fueran casi del mismo tono, arrastrar la manija no produciría
+            ningún cambio visible y la única interacción real de la página
+            parecería estropeada. */}
+        <div className="absolute inset-0 bg-surface">
+          {after ? (
+            <Image src={after} alt="" fill sizes={sizes} className={imgClass} />
+          ) : null}
           <div aria-hidden="true" className="absolute inset-0 bg-bronze mix-blend-color opacity-55" />
         </div>
 
         {/* Antes — recortada por la posición de la manija */}
-        <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-          <Image src={before} alt={`Antes: ${service}`} fill sizes={sizes} className={imgClass} />
+        <div
+          className="absolute inset-0 bg-ground"
+          style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+        >
+          {before ? (
+            <Image src={before} alt={`Antes: ${service}`} fill sizes={sizes} className={imgClass} />
+          ) : null}
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-bronze-deep mix-blend-color opacity-55"

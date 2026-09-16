@@ -104,42 +104,31 @@ export const barbers = [
 /**
  * Galería antes/después.
  *
- * ⚠️ PROVISIONALES — NO PUBLICAR ASÍ. Dos motivos, los dos serios:
+ * Sin fotos hasta que exista la sesión real. El comparador está montado y
+ * probado —arrastre, teclado, lector de pantalla— y degrada a un
+ * placeholder tipográfico mientras no haya imágenes: basta poner aquí las
+ * rutas y funciona.
  *
- * 1. RESOLUCIÓN. Vienen comprimidas por WhatsApp. El par 3 mide 119px de
- *    ancho y el comparador las muestra a ~400px: se verá como un mosaico.
- *    Para que se vean nítidas en un móvil moderno (densidad 2x-3x) hacen
- *    falta unos 1200px de ancho reales. Hay que pedirlas por AirDrop,
- *    Drive o correo — nunca por WhatsApp, que recomprime siempre.
+ * Las fotos de prueba que hubo aquí se retiraron por dos motivos. La
+ * resolución era inservible: llegaron por WhatsApp, que recomprime, y el
+ * par más pequeño medía 119px de ancho para un marco de ~400px. Y, lo
+ * importante, no eran trabajos de esta barbería — en un par se veía el
+ * cartel de otro local al fondo. Publicar trabajo ajeno como propio
+ * engaña al cliente final, y esas imágenes no son nuestras para
+ * redistribuirlas en una web pública.
  *
- * 2. PROCEDENCIA. En el par 1 se ve el cartel de otra barbería al fondo,
- *    y el par 3 es otro local distinto. No son trabajos de Ares. Publicar
- *    trabajo ajeno como propio es engañoso con el cliente final y además
- *    es material de otro. Se sustituyen por fotos de la sesión real.
+ * Para la sesión: mínimo 1200px de ancho, entregadas por AirDrop, Drive o
+ * correo. Nunca por WhatsApp.
  *
- * Sirven para dejar el comparador montado y probado. Nada más.
- *
- * El tratamiento (blanco y negro con tinte bronce) se aplica por CSS, no
- * está quemado en los archivos: unifica fotos de procedencia y calidad
- * distintas, y de paso disimula el ruido de compresión.
+ * El tratamiento (blanco y negro con tinte bronce) se aplica por CSS y no
+ * va quemado en los archivos: unifica fotos de procedencia y calidad
+ * distintas.
  */
-export const gallery = [
-  {
-    before: "/trabajos/corte-1-antes.jpg",
-    after: "/trabajos/corte-1-despues.jpg",
-    service: "Fade con tupé y perfilado de barba",
-  },
-  {
-    before: "/trabajos/corte-2-antes.jpg",
-    after: "/trabajos/corte-2-despues.jpg",
-    service: "Corte clásico con flequillo",
-  },
-  {
-    before: "/trabajos/corte-3-antes.jpg",
-    after: "/trabajos/corte-3-despues.jpg",
-    service: "Corte corto en cabello rizado",
-  },
-] as const;
+export const gallery: { before: string | null; after: string | null; service: string }[] = [
+  { before: null, after: null, service: "Fade con tupé y perfilado de barba" },
+  { before: null, after: null, service: "Corte clásico con flequillo" },
+  { before: null, after: null, service: "Corte corto en cabello rizado" },
+];
 
 /**
  * Testimonios reales, con permiso por escrito del cliente que los dio.
