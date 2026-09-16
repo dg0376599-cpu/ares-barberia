@@ -32,9 +32,11 @@ export default function Hero() {
       // bundle. Los @keyframes no necesitan JavaScript para correr.
       className="hero-lista relative flex min-h-[88svh] flex-col justify-center px-5 pb-16 pt-20 sm:px-8 sm:pt-24 lg:px-12"
     >
-      <div className="grid w-full items-center gap-10 lg:grid-cols-[1fr_auto] lg:gap-16">
-        {/* Columna de la voz */}
-        <div className="order-2 lg:order-1">
+      {/* En escritorio el emblema no vive aquí dentro: lo pone `Opening`
+          como elemento fijo que acompaña al hero y al manifiesto. Por eso
+          esta columna reserva sitio a su derecha con `lg:pr-80`. */}
+      <div className="grid w-full items-center gap-10 lg:pr-80">
+        <div>
           <h1
             aria-label={business.fullName}
             className="font-display text-[clamp(3.75rem,18vw,10rem)] uppercase leading-[0.85] tracking-[0.08em] [text-indent:0.08em]"
@@ -81,10 +83,12 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* El sello. Deliberadamente más pequeño que el wordmark: es el
-            detalle que acredita, no el titular. */}
-        <AresEmblem3D className="order-1 w-[7.5rem] justify-self-start sm:w-[9rem] lg:order-2 lg:w-[17rem] lg:justify-self-end" />
       </div>
+
+      {/* El sello en móvil y tablet, donde no hay columna lateral que le
+          dé sitio. Deliberadamente más pequeño que el wordmark: es el
+          detalle que acredita, no el titular. */}
+      <AresEmblem3D className="mt-12 w-[7.5rem] sm:w-[9rem] lg:hidden" />
     </section>
   );
 }

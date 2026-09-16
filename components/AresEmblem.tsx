@@ -29,6 +29,15 @@ const CENTRO = 160;
 const R_EXTERIOR = 140;
 const R_INTERIOR = 134;
 
+/**
+ * Las coordenadas se redondean a dos decimales, y no es cosmética: sin
+ * redondear, React serializa el mismo float con distinta precisión en el
+ * servidor y en el cliente (259.5814066139708 frente a 259.58140661397084)
+ * y la hidratación avisa de que el árbol no coincide. Dos decimales sobran
+ * para un dibujo de 320 unidades, y de paso el HTML pesa menos.
+ */
+const r2 = (n: number) => Math.round(n * 100) / 100;
+
 function bordeDentado() {
   return Array.from({ length: MARCAS }, (_, i) => {
     const angulo = (i / MARCAS) * Math.PI * 2;
@@ -37,10 +46,10 @@ function bordeDentado() {
     return (
       <line
         key={i}
-        x1={CENTRO + cos * R_EXTERIOR}
-        y1={CENTRO + sin * R_EXTERIOR}
-        x2={CENTRO + cos * R_INTERIOR}
-        y2={CENTRO + sin * R_INTERIOR}
+        x1={r2(CENTRO + cos * R_EXTERIOR)}
+        y1={r2(CENTRO + sin * R_EXTERIOR)}
+        x2={r2(CENTRO + cos * R_INTERIOR)}
+        y2={r2(CENTRO + sin * R_INTERIOR)}
       />
     );
   });

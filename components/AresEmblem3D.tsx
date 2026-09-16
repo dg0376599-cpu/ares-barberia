@@ -37,6 +37,11 @@ export default function AresEmblem3D({ className = "" }: { className?: string })
     );
     if (!finoYConMovimiento.matches) return;
 
+    // Hay dos emblemas en el árbol (el de móvil y el de escritorio), y
+    // solo uno está visible en cada momento. El oculto no debe escuchar
+    // el puntero ni gastar fotogramas.
+    if (escena.offsetParent === null) return;
+
     let frame = 0;
     let objetivoX = 0;
     let objetivoY = 0;

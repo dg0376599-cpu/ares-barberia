@@ -1,5 +1,4 @@
-import Hero from "@/components/Hero";
-import Manifesto from "@/components/Manifesto";
+import Opening from "@/components/Opening";
 import Services from "@/components/Services";
 import Barbers from "@/components/Barbers";
 import Gallery from "@/components/Gallery";
@@ -25,8 +24,9 @@ export default function Home() {
   return (
     <>
       <main>
-        <Hero />
-        <Manifesto />
+        {/* Hero y manifiesto van juntos: comparten el emblema que los
+            acompaña en escritorio. Ver Opening. */}
+        <Opening />
         <Services />
         <Barbers />
         <Gallery />
