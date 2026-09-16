@@ -108,12 +108,18 @@ export const barbers = [
  * trabajos de esta barbería —que no existe— sino sustitutas hasta que
  * haya una sesión real. La advertencia se retira al cambiarlas.
  *
- * Hubo un tercer par y se descartó por calidad: medía 119px de ancho y el
- * optimizador lo servía a 46px. A ese tamaño no es una foto, es un
- * mosaico.
+ * El tercer par va a 119px de ancho y se verá blando comparado con los
+ * otros dos: es lo que queda después de que WhatsApp recomprima. Entra
+ * igual porque la sección se lee mejor completa que coja, pero es el
+ * primero que hay que sustituir.
  *
  * Para la sesión real: mínimo 1200px de ancho, entregadas por AirDrop,
  * Drive o correo. Nunca por WhatsApp, que recomprime y las destroza.
+ *
+ * Siguiente paso previsto: mover estas imágenes a Supabase Storage, para
+ * que la barbería pueda subir sus propias fotos sin tocar el código. La
+ * galería debería pedírselas a un repositorio y no leer rutas fijas, así
+ * el cambio no toca este componente.
  *
  * El comparador funciona con o sin imagen: una entrada en `null` degrada
  * a un marcador tipográfico en vez de romperse.
@@ -132,6 +138,11 @@ export const gallery: { before: string | null; after: string | null; service: st
     before: "/trabajos/corte-2-antes.jpg",
     after: "/trabajos/corte-2-despues.jpg",
     service: "Corte clásico con flequillo",
+  },
+  {
+    before: "/trabajos/corte-3-antes.jpg",
+    after: "/trabajos/corte-3-despues.jpg",
+    service: "Corte corto en cabello rizado",
   },
 ];
 
