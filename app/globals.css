@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+/* ───────────────────────────────────────────────────────────
+   Tokens de diseño — Ares Barbería
+   Definidos una sola vez aquí. Ningún componente escribe un
+   color a mano: todos salen de estas variables.
+   Valores y contrastes verificados en DIRECCION-ARTE.md
+   ─────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Superficies — negro cálido, nunca negro puro ni azulado */
+  --color-ground: #0b0a08;
+  --color-surface: #16130f;
+  --color-edge: #2a241c;
+
+  /* Texto */
+  --color-ink: #f2efe9; /* 17.2:1 sobre ground */
+  --color-ink-soft: #a39b8e; /*  7.2:1 */
+
+  /* Bronce — un solo color (H30, S33%) a tres luminosidades */
+  --color-bronze-light: #be9e7e; /*  7.9:1 — texto en bronce */
+  --color-bronze: #ad855d; /*  5.9:1 — CTA e iconografía */
+  --color-bronze-deep: #6b5334; /*  2.7:1 — SOLO filetes y bordes */
+
+  /* Tipografía */
+  --font-display: var(--font-instrument-serif), Georgia, serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+
+  /* Curvas — nunca `ease` por defecto ni `linear` */
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-blade: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ───────────── base ───────────── */
+
+body {
+  background: var(--color-ground);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Títulos: interlineado apretado y tracking negativo.
+   Es el ajuste más barato que separa lo profesional de lo genérico. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* Foco visible siempre. Accesibilidad real, no un detalle. */
+:focus-visible {
+  outline: 2px solid var(--color-bronze-light);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--color-bronze);
+  color: var(--color-ground);
+}
+
+/* ───────────── utilidades propias ───────────── */
+
+/* Revelado de texto: el hijo sube desde abajo dentro de una ventana
+   con overflow oculto. Solo transform → corre en el compositor. */
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+/* Cifras que alinean solas en columna (precios) */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────────── entrada del hero ─────────────
+   CSS puro y no una librería: son transform/opacity, corren en el
+   compositor del navegador y es imposible que bajen de 60fps.
+   La clase .lista la pone el componente al montar, así el estado
+   en reposo ya es legible si el JS no llega a ejecutarse. */
+
+.hero-lista .glyph {
+  animation: rise 0.55s var(--ease-out-soft) backwards;
+}
+.hero-lista .blade {
+  animation: sweep 0.6s var(--ease-blade) backwards;
+}
+.hero-lista .claim-quiet {
+  animation: fade 0.5s ease-out 0.9s backwards;
+}
+.hero-lista .claim-loud {
+  animation: rise 0.6s var(--ease-out-soft) 1.4s backwards;
+}
+.hero-lista .hero-actions {
+  animation: fade 0.5s ease-out 1.7s backwards;
+}
+
+@keyframes sweep {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+    opacity: 0;
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ───────────── barrido de luz sobre metal ─────────────
+   Aparece UNA sola vez en la página, en "Forjado en Caracas".
+   El color sólido es el estado base: si el navegador no soporta
+   background-clip:text, el texto sigue siendo legible en vez de
+   volverse transparente (es decir, invisible). */
+
+.metal-sweep {
+  color: var(--color-bronze-light);
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .metal-sweep {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-bronze-deep) 0%,
+      var(--color-bronze-deep) 38%,
+      var(--color-bronze-light) 50%,
+      var(--color-bronze-deep) 62%,
+      var(--color-bronze-deep) 100%
+    );
+    background-size: 300% 100%;
+    background-position-x: 65%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+}
+
+/* ───────────── movimiento reducido ─────────────
+   No es opcional: hay gente que se marea de verdad. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
