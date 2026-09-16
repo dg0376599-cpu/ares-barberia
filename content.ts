@@ -17,7 +17,18 @@ export const business = {
   city: "Caracas",
   country: "Venezuela",
 
-  whatsapp: "584120208508",
+  /**
+   * Número de ejemplo, deliberadamente inexistente.
+   *
+   * Este es un proyecto conceptual y la página es pública: un número real
+   * en una web de negocio local lo recogen los rastreadores de spam en
+   * cuestión de días, y queda además en los datos estructurados y en la
+   * caché de los buscadores, de donde ya no se puede retirar.
+   *
+   * El botón sigue siendo funcional y demuestra el flujo completo; solo
+   * el destino es de mentira.
+   */
+  whatsapp: "584120000000",
   whatsappMessage: "Hola, quisiera reservar una cita en Ares Barbería.",
 
   address: {
