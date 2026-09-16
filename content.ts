@@ -125,9 +125,16 @@ export const barbers = [
  * distintas.
  */
 export const gallery: { before: string | null; after: string | null; service: string }[] = [
-  { before: null, after: null, service: "Fade con tupé y perfilado de barba" },
-  { before: null, after: null, service: "Corte clásico con flequillo" },
-  { before: null, after: null, service: "Corte corto en cabello rizado" },
+  {
+    before: "/trabajos/corte-1-antes.jpg",
+    after: "/trabajos/corte-1-despues.jpg",
+    service: "Fade con tupé y perfilado de barba",
+  },
+  {
+    before: "/trabajos/corte-2-antes.jpg",
+    after: "/trabajos/corte-2-despues.jpg",
+    service: "Corte clásico con flequillo",
+  },
 ];
 
 /**
