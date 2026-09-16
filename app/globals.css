@@ -31,40 +31,59 @@
   --ease-blade: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* ───────────── base ───────────── */
+/* ───────────── base ─────────────
 
-body {
-  background: var(--color-ground);
-  color: var(--color-ink);
-  font-family: var(--font-body);
-  font-weight: 300;
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  overflow-x: hidden;
-}
+   ⚠️ TODO ESTE BLOQUE VA DENTRO DE @layer base, y no es opcional.
 
-/* Títulos: interlineado apretado y tracking negativo.
-   Es el ajuste más barato que separa lo profesional de lo genérico. */
-h1,
-h2,
-h3 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
-}
+   En Tailwind v4 las utilidades viven en `@layer utilities`. El CSS que
+   NO está en ninguna capa gana siempre sobre el CSS que sí lo está, sin
+   importar la especificidad. Si estas reglas quedan fuera de la capa,
+   `h1,h2,h3` anula en silencio cualquier `font-*`, `tracking-*` o
+   `leading-*` que se ponga en un encabezado desde el marcado.
+   Pasó: el wordmark perdió su tracking y los rótulos pequeños salían en
+   la serif de display pese a llevar `font-body`. */
 
-/* Foco visible siempre. Accesibilidad real, no un detalle. */
-:focus-visible {
-  outline: 2px solid var(--color-bronze-light);
-  outline-offset: 3px;
-}
+@layer base {
+  body {
+    background: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    /* 400, no 300: sobre fondo casi negro hay irradiación y los trazos
+       finos se perciben aún más finos. Renunciamos al modo claro con la
+       condición de que el oscuro esté impecable, y esto es parte del trato. */
+    font-weight: 400;
+    line-height: 1.65;
+    /* Sin esto la barra de scroll y los controles nativos se pintan en
+       claro: una banda blanca al lado de una página negra. */
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
 
-::selection {
-  background: var(--color-bronze);
-  color: var(--color-ground);
+  /* Títulos: interlineado apretado y tracking negativo.
+     Es el ajuste más barato que separa lo profesional de lo genérico.
+     Los encabezados que necesiten otra cosa lo piden desde el marcado. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  /* Foco visible siempre. Accesibilidad real, no un detalle. */
+  :focus-visible {
+    outline: 2px solid var(--color-bronze-light);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-bronze);
+    color: var(--color-ground);
+  }
 }
 
 /* ───────────── utilidades propias ───────────── */
@@ -133,13 +152,19 @@ h3 {
 
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   .metal-sweep {
+    /* El tono bajo es `bronze` (5.93:1) y no `bronze-deep` (2.74:1):
+       el profundo es para filetes, y aquí es la frase de marca más grande
+       de la página. Sigue siendo el mismo H30/S33 a distinta luminosidad,
+       así que se lee igual como metal bajo la luz, pero legible en los dos
+       extremos del barrido — incluido el estado apagado con
+       prefers-reduced-motion. */
     background-image: linear-gradient(
       100deg,
-      var(--color-bronze-deep) 0%,
-      var(--color-bronze-deep) 38%,
+      var(--color-bronze) 0%,
+      var(--color-bronze) 38%,
       var(--color-bronze-light) 50%,
-      var(--color-bronze-deep) 62%,
-      var(--color-bronze-deep) 100%
+      var(--color-bronze) 62%,
+      var(--color-bronze) 100%
     );
     background-size: 300% 100%;
     background-position-x: 65%;

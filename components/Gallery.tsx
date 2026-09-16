@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useRef, useState } from "react";
 import SectionHeading from "./SectionHeading";
 import { gallery } from "@/content";
@@ -14,11 +15,22 @@ import { gallery } from "@/content";
  * Accesible con teclado: la manija es un slider real, así que las flechas
  * funcionan y un lector de pantalla lo anuncia como lo que es.
  *
- * Mientras no haya fotos reales, se muestran dos superficies distintas
- * con su etiqueta. La mecánica ya queda probada; al llegar las fotos solo
- * cambia `content.ts`.
+ * Tratamiento de imagen: blanco y negro con un velado de bronce por
+ * encima (`mix-blend-color` sobre la foto desaturada). Unifica fotos
+ * tomadas en sitios y con cámaras distintas —que es justo el caso aquí— y
+ * de paso el ruido de compresión canta mucho menos sin color.
  */
-function Comparator({ service, index }: { service: string; index: number }) {
+function Comparator({
+  service,
+  before,
+  after,
+  priority,
+}: {
+  service: string;
+  before: string;
+  after: string;
+  priority: boolean;
+}) {
   const [position, setPosition] = useState(50);
   const frameRef = useRef<HTMLDivElement>(null);
 
@@ -40,33 +52,43 @@ function Comparator({ service, index }: { service: string; index: number }) {
     moveTo(e.clientX);
   };
 
+  // object-position alto: en una foto de corte lo que importa es la
+  // cabeza, y estas vienen muy verticales. Centrarlas cortaría el pelo.
+  const imgClass = "object-cover object-[center_22%] grayscale contrast-[1.15]";
+  const sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
+
   return (
     <figure className="grid gap-3">
       <div
         ref={frameRef}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
-        className="relative aspect-4/5 cursor-ew-resize touch-pan-y select-none overflow-hidden bg-surface"
+        className="relative aspect-3/4 cursor-ew-resize touch-pan-y select-none overflow-hidden bg-surface outline-offset-2 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-bronze-light"
       >
-        {/* Después (capa de fondo) */}
-        <div className="absolute inset-0 grid place-items-center bg-surface">
-          <span className="font-display text-[clamp(2rem,6vw,3rem)] text-bronze-deep">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span className="absolute bottom-4 right-4 text-[0.625rem] uppercase tracking-[0.14em] text-ink-soft">
+        {/* Después — capa de fondo */}
+        <div className="absolute inset-0">
+          <Image src={after} alt="" fill sizes={sizes} className={imgClass} priority={priority} />
+          <div aria-hidden="true" className="absolute inset-0 bg-bronze mix-blend-color opacity-55" />
+          <span className="absolute bottom-4 right-4 text-[0.6875rem] uppercase tracking-[0.14em] text-ink drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
             Después
           </span>
         </div>
 
-        {/* Antes (capa recortada por la posición de la manija) */}
+        {/* Antes — recortada por la posición de la manija */}
         <div
-          className="absolute inset-0 grid place-items-center bg-ground"
+          className="absolute inset-0"
           style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
         >
-          <span className="font-display text-[clamp(2rem,6vw,3rem)] text-edge">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span className="absolute bottom-4 left-4 text-[0.625rem] uppercase tracking-[0.14em] text-ink-soft">
+          <Image
+            src={before}
+            alt={`Antes: ${service}`}
+            fill
+            sizes={sizes}
+            className={imgClass}
+            priority={priority}
+          />
+          <div aria-hidden="true" className="absolute inset-0 bg-bronze-deep mix-blend-color opacity-55" />
+          <span className="absolute bottom-4 left-4 text-[0.6875rem] uppercase tracking-[0.14em] text-ink drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
             Antes
           </span>
         </div>
@@ -76,7 +98,7 @@ function Comparator({ service, index }: { service: string; index: number }) {
           className="pointer-events-none absolute inset-y-0 w-px bg-bronze-light"
           style={{ left: `${position}%` }}
         >
-          <span className="absolute top-1/2 left-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full border border-bronze-light bg-ground" />
+          <span className="absolute left-1/2 top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full border border-bronze-light bg-ground/80" />
         </div>
 
         <input
@@ -98,14 +120,22 @@ export default function Gallery() {
   return (
     <section id="trabajos" className="border-t border-edge px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
       <SectionHeading
-        eyebrow="Trabajos"
         title="Antes y después"
-        lead="Arrastra para ver el cambio. Sin filtros ni retoque: la misma luz y el mismo ángulo en las dos fotos."
+        lead="Arrastra para ver el cambio. Sin filtros ni retoque."
       />
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
         {gallery.map((item, i) => (
-          <Comparator key={i} service={item.service} index={i} />
+          <Comparator
+            key={item.service}
+            service={item.service}
+            before={item.before}
+            after={item.after}
+            // Solo la primera se carga con prioridad: las otras dos
+            // entran al hacer scroll y no deben competir por el ancho
+            // de banda de la primera pantalla.
+            priority={i === 0}
+          />
         ))}
       </div>
     </section>

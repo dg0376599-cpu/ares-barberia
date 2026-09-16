@@ -10,6 +10,10 @@ import { testimonials } from "@/content";
  * aprendió a ignorar los widgets.
  */
 export default function Testimonials() {
+  // Sin testimonios reales no hay sección. Una sección de reseñas vacía
+  // (o rellena de citas inventadas) resta más credibilidad que su ausencia.
+  if (testimonials.length === 0) return null;
+
   return (
     <section className="border-t border-edge px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
       <SectionHeading eyebrow="Clientes" title="Lo que dicen" />

@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import { hero, business, whatsappUrl } from "@/content";
 
 /**
@@ -16,22 +13,19 @@ import { hero, business, whatsappUrl } from "@/content";
  * y ahorramos ~50KB en la primera carga. Una librería de animación se
  * justifica cuando hace falta orquestación o gestos, no aquí.
  *
- * La clase `hero-lista` la añade este componente al montar: así el estado
- * en reposo ya es legible aunque el JS falle o tarde.
+ * Al ser CSS puro, este componente no necesita JavaScript en el cliente:
+ * es componente de servidor y no manda ni un byte de bundle.
  */
 export default function Hero() {
-  const ref = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    ref.current?.classList.add("hero-lista");
-  }, []);
-
   const letters = business.name.split("");
 
   return (
     <section
-      ref={ref}
-      className="relative flex min-h-[88svh] flex-col justify-center px-5 pb-16 pt-28 sm:px-8 lg:px-12"
+      // La clase va en el HTML servido, no añadida por JS al hidratar.
+      // Si se añadía después, en una conexión lenta el visitante veía el
+      // hero completo, desaparecer y volver a entrar cuando llegaba el
+      // bundle. Los @keyframes no necesitan JavaScript para correr.
+      className="hero-lista relative flex min-h-[88svh] flex-col justify-center px-5 pb-16 pt-20 sm:px-8 sm:pt-24 lg:px-12"
     >
       {/* El nombre. En móvil se contiene para no comerse la pantalla;
           en escritorio manda. aria-label evita que el lector de pantalla

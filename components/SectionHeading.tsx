@@ -10,15 +10,20 @@ export default function SectionHeading({
   title,
   lead,
 }: {
-  eyebrow: string;
+  /** Opcional a propósito: un antetítulo en TODAS las secciones, diga o
+   *  no diga algo, es repetición mecánica y huele a plantilla. Solo se
+   *  pone donde añade contexto que el título no da. */
+  eyebrow?: string;
   title: string;
   lead?: string;
 }) {
   return (
     <div className="mb-12 grid gap-3 sm:mb-16">
-      <span className="text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-bronze">
-        {eyebrow}
-      </span>
+      {eyebrow ? (
+        <span className="text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-bronze">
+          {eyebrow}
+        </span>
+      ) : null}
       <h2 className="text-[clamp(1.75rem,5vw,2.75rem)]">{title}</h2>
       {lead ? <p className="max-w-[62ch] text-ink-soft">{lead}</p> : null}
     </div>

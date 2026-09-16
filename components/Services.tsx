@@ -14,7 +14,6 @@ export default function Services() {
   return (
     <section id="servicios" className="border-t border-edge px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
       <SectionHeading
-        eyebrow="Servicios"
         title="Lo que hacemos y lo que cuesta"
         lead="Sin paquetes inventados ni letra pequeña. El precio que ves es el que pagas."
       />

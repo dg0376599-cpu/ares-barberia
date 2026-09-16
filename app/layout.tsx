@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, Inter } from "next/font/google";
 import "./globals.css";
 import { business, seo } from "@/content";
@@ -18,6 +18,14 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
 });
+
+/* Tiñe la barra de direcciones del navegador en móvil. En una landing de
+   marca a pantalla completa, una barra blanca sobre una página negra se
+   nota mucho y cuesta dos líneas arreglarlo. */
+export const viewport: Viewport = {
+  themeColor: "#0b0a08",
+  colorScheme: "dark",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(seo.url),
@@ -50,14 +58,20 @@ export const metadata: Metadata = {
    alimenta la ficha del mapa cuando alguien busca "barbería cerca de mí". */
 function structuredData() {
   const openDays = business.hours.filter((h) => h.open !== null);
+  const { lat, lng } = business.address;
+
   return {
     "@context": "https://schema.org",
     "@type": "HairSalon",
     name: business.fullName,
+    legalName: business.legalName,
+    taxID: business.taxId,
     description: seo.description,
     url: seo.url,
     image: `${seo.url}/og.jpg`,
-    priceRange: "$$",
+    telephone: `+${business.whatsapp}`,
+    priceRange: "$6–$13",
+    currenciesAccepted: "USD",
     address: {
       "@type": "PostalAddress",
       streetAddress: `${business.address.street}, ${business.address.detail}`,
@@ -65,11 +79,12 @@ function structuredData() {
       addressRegion: business.address.region,
       addressCountry: business.address.country,
     },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: business.address.lat,
-      longitude: business.address.lng,
-    },
+    // Solo se declara la geolocalización si hay coordenadas confirmadas.
+    // Un punto inventado en el mapa es peor que ninguno: manda a la gente
+    // a otra parte de la ciudad y Google lo usa para la ficha del negocio.
+    ...(lat !== null && lng !== null
+      ? { geo: { "@type": "GeoCoordinates", latitude: lat, longitude: lng } }
+      : {}),
     openingHoursSpecification: openDays.map((h) => ({
       "@type": "OpeningHoursSpecification",
       description: h.days,

@@ -17,7 +17,7 @@ import { closing } from "@/content";
  * pintaría el texto transparente, es decir, invisible.
  */
 export default function Closing() {
-  const ref = useRef<HTMLParagraphElement>(null);
+  const ref = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -58,12 +58,14 @@ export default function Closing() {
 
   return (
     <section className="border-t border-edge px-5 py-28 sm:px-8 sm:py-36 lg:px-12">
-      <p
+      {/* h2 y no p: es la frase de marca más grande de la página y le
+          corresponde peso semántico, también de cara a Google. */}
+      <h2
         ref={ref}
-        className="metal-sweep mx-auto max-w-[14ch] text-center font-display text-[clamp(2.75rem,11vw,7rem)] leading-[0.95] tracking-[-0.03em]"
+        className="metal-sweep mx-auto max-w-[14ch] text-center text-[clamp(2.75rem,11vw,7rem)] leading-[0.95] tracking-[-0.03em]"
       >
         {closing.line}
-      </p>
+      </h2>
     </section>
   );
 }

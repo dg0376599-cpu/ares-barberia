@@ -42,7 +42,11 @@ export default function Location() {
                 className="grid grid-cols-[1fr_auto] items-baseline gap-4 bg-ground py-3"
               >
                 <dt className="text-sm text-ink-soft">{h.days}</dt>
-                <dd className={`tnum text-sm ${h.open ? "text-ink" : "text-bronze-deep"}`}>
+                {/* "Cerrado" en ink-soft (7.2:1), no en bronze-deep (2.74:1):
+                    el bronce profundo es para filetes, y esto es información
+                    que la gente necesita leer. Si hay que distinguirlo, se
+                    distingue con la palabra, no bajando el contraste. */}
+                <dd className={`tnum text-sm ${h.open ? "text-ink" : "text-ink-soft"}`}>
                   {h.open ? `${h.open} – ${h.close}` : "Cerrado"}
                 </dd>
               </div>
@@ -53,7 +57,7 @@ export default function Location() {
             href={`https://www.google.com/maps/search/?api=1&query=${query}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="justify-self-start border-b border-bronze-deep pb-1 text-sm text-bronze-light transition-colors hover:border-bronze-light hover:text-ink"
+            className="-my-2 justify-self-start border-b border-bronze-deep py-2 text-sm text-bronze-light transition-colors hover:border-bronze-light hover:text-ink"
           >
             Cómo llegar
           </a>
@@ -78,7 +82,7 @@ export default function Location() {
               <span className="text-[0.75rem] uppercase tracking-[0.14em] text-bronze-light">
                 Ver el mapa
               </span>
-              <span className="mx-auto max-w-[28ch] text-xs text-ink-soft">
+              <span className="mx-auto max-w-[32ch] text-[0.8125rem] text-ink-soft">
                 Se carga solo al pulsar, para no ralentizar la página ni activar cookies de
                 terceros sin tu permiso.
               </span>
