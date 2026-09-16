@@ -148,7 +148,11 @@ export const seo = {
   title: "Ares Barbería · Barbería premium en Caracas",
   description:
     "Corte clásico, fade, arreglo de barba y afeitado con navaja en Caracas. Desde $6. Reserva por WhatsApp.",
-  url: "https://aresbarberia.com", // PENDIENTE — dominio real
+  // La URL real de publicación. Importa que sea la de verdad: de aquí
+  // salen el canonical, el sitemap y las vistas previas al compartir, y
+  // apuntando a un dominio inexistente Google indexaría una dirección
+  // muerta y los enlaces compartidos no mostrarían nada.
+  url: "https://ares-barberia.vercel.app",
 } as const;
 
 /** Enlace de WhatsApp ya montado, para no repetir la lógica en cada botón. */

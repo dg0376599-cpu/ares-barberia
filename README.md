@@ -5,7 +5,7 @@ Landing page for a premium barbershop in Caracas, Venezuela.
 > **Conceptual project.** Ares Barbería is a fictional brand created for this design
 > exercise. No real business, client data or booking system is involved.
 
-**Live demo:** _coming soon_
+**Live demo:** https://ares-barberia.vercel.app
 
 ---
 
